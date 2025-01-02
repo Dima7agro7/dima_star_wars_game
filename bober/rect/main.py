@@ -12,6 +12,12 @@ BLACK = (0, 0, 0)
 kill_enemy_hero1 = 0
 kill_enemy_hero2 = 0
 
+
+def score_blit(x, y = 0):
+    font = pygame.font.SysFont(None, 24)
+    img_score = font.render(f'{x}', True, RED)
+    screen.blit(img_score, (20, 20 + y))
+
 screen_size = wight, height = 800, 800  # задаём ширину высоту для удобной работы
 screen = pygame.display.set_mode(screen_size)  # задаём размер экрана
 pygame.display.set_caption('Моя игра')  # название окна
@@ -59,15 +65,16 @@ while running:  # запуск игрового цикла
 
     if pygame.sprite.groupcollide(hero1.all_bullet, all_enemy, True, True):
         kill_enemy_hero1 += 1
-        print('убито 1 игроком =',kill_enemy_hero1)
+    score_blit(kill_enemy_hero1)
 
 
     if pygame.sprite.groupcollide(hero2.all_bullet, all_enemy, True, True):
         kill_enemy_hero2 += 1
-        print('убито 2 игроком =', kill_enemy_hero2)
+    score_blit(kill_enemy_hero2 , 50 )
 
     screen.blit(hero1.image, hero1.rect)  # отрисовка кораблика
     screen.blit(hero2.image, hero2.rect)  # отрисовка кораблика
     pygame.display.update()  # обновляем наш дисплей
 
 pygame.quit()  # завершаем все зависимости pygame
+
