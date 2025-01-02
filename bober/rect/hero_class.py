@@ -11,7 +11,8 @@ class Player(pygame.sprite.Sprite):  # наследуем класс от кла
                  k_move_left=pygame.K_a,
                  k_move_right=pygame.K_d,
                  k_shoot=pygame.K_SPACE,
-                 size_image=0.15):  # создаём иницилизатор класса ( запускаеться при созданиее экземпляра класса)
+                 size_image=0.15,
+                 screen=0):  # создаём иницилизатор класса ( запускаеться при созданиее экземпляра класса)
         super().__init__()  # наследуем свойства родителя
         self.h, self.w = h, w  # созраняем в аргументы ширины высоты
         self.image = pygame.image.load(f'image/playerShip{number_image}_orange.png')  # импортируе картику
@@ -27,10 +28,15 @@ class Player(pygame.sprite.Sprite):  # наследуем класс от кла
         self.all_bullet = pygame.sprite.Group()
         self.speed_shooting = 15
         self.speed_shooting_quantity = 0
+        self.max_hp = 10
         self.hp = 10
         self.kill_score = 0
+        self.screen = screen
     def update(self):  # отвечает за все изменения персонажа
         self.move()  # вызываем функцию передвижения
+        if self.hp > 0:
+            pygame.draw.rect(self.screen,(255, 0, 0), (self.rect.left, self.rect.bottom, self.max_hp*10, 10))
+            pygame.draw.rect(self.screen,(7, 133, 28), (self.rect.left, self.rect.bottom, self.hp*10, 10))
 
     def draw(self, screen):  # потенциально , тут отрисовываем наш корабль
         pass

@@ -25,9 +25,9 @@ screen_size = wight, height = 800, 800  # задаём ширину высоту
 screen = pygame.display.set_mode(screen_size)  # задаём размер экрана
 pygame.display.set_caption('Моя игра')  # название окна
 
-hero1 = hero_class.Player(wight, height)  # создание экземпляра класса
+hero1 = hero_class.Player(wight, height, screen = screen)  # создание экземпляра класса
 hero2 = hero_class.Player(
-    wight, height, 2, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_l, size_image=0.09
+    wight, height, 2, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_l, size_image=0.09, screen = screen
 )
 
 all_enemy = pygame.sprite.Group()
@@ -64,14 +64,14 @@ while running:  # запуск игрового цикла
     if pygame.sprite.spritecollide(hero1, all_enemy, True):  # остоновка
         hero1.hp -= 1
         if hero1.hp == 0:
-            running = False
-    health_point(f'hp1={hero1.hp}')
+            hero1.kill()
+            # running = False
 
     if pygame.sprite.spritecollide(hero2, all_enemy, True):
         hero2.hp -= 1
         if hero2.hp == 0:
-            running = False
-    health_point(f'hp2={hero2.hp}', 20)
+            hero2.kill()
+            # running = False
 
     if pygame.sprite.groupcollide(hero1.all_bullet, all_enemy, True, True):
         hero1.kill_score += 1
@@ -82,8 +82,10 @@ while running:  # запуск игрового цикла
         hero2.kill_score += 1
     score_blit(f'score1 = {hero2.kill_score}' , 20 )
 
-    screen.blit(hero1.image, hero1.rect)  # отрисовка кораблика
-    screen.blit(hero2.image, hero2.rect)  # отрисовка кораблика
+    if hero2.hp > 0:
+        screen.blit(hero2.image, hero2.rect)
+    if hero1.hp > 0:
+        screen.blit(hero1.image, hero1.rect)# отрисовка кораблика
     pygame.display.update()  # обновляем наш дисплей
 
 pygame.quit()  # завершаем все зависимости pygame
