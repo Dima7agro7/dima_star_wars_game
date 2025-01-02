@@ -27,6 +27,8 @@ class Player(pygame.sprite.Sprite):  # наследуем класс от кла
         self.all_bullet = pygame.sprite.Group()
         self.speed_shooting = 15
         self.speed_shooting_quantity = 0
+        self.hp = 10
+        self.kill_score = 0
     def update(self):  # отвечает за все изменения персонажа
         self.move()  # вызываем функцию передвижения
 

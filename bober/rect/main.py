@@ -9,14 +9,17 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 
-kill_enemy_hero1 = 0
-kill_enemy_hero2 = 0
 
 
 def score_blit(x, y = 0):
     font = pygame.font.SysFont(None, 24)
     img_score = font.render(f'{x}', True, RED)
     screen.blit(img_score, (20, 20 + y))
+
+def health_point(x, y = 0):
+    font = pygame.font.SysFont(None, 24)
+    img_score = font.render(f'{x}', True, RED)
+    screen.blit(img_score, (120, 20 + y))
 
 screen_size = wight, height = 800, 800  # задаём ширину высоту для удобной работы
 screen = pygame.display.set_mode(screen_size)  # задаём размер экрана
@@ -58,19 +61,26 @@ while running:  # запуск игрового цикла
     hero1.all_bullet.draw(screen)
     hero2.all_bullet.draw(screen)
 
-    if pygame.sprite.spritecollide(hero1, all_enemy, False):  # остоновка
-        running = False
-    if pygame.sprite.spritecollide(hero2, all_enemy, False):
-        running = False
+    if pygame.sprite.spritecollide(hero1, all_enemy, True):  # остоновка
+        hero1.hp -= 1
+        if hero1.hp == 0:
+            running = False
+    health_point(f'hp1={hero1.hp}')
+
+    if pygame.sprite.spritecollide(hero2, all_enemy, True):
+        hero2.hp -= 1
+        if hero2.hp == 0:
+            running = False
+    health_point(f'hp2={hero2.hp}', 20)
 
     if pygame.sprite.groupcollide(hero1.all_bullet, all_enemy, True, True):
-        kill_enemy_hero1 += 1
-    score_blit(kill_enemy_hero1)
+        hero1.kill_score += 1
+    score_blit(f'score1 = {hero1.kill_score}')
 
 
     if pygame.sprite.groupcollide(hero2.all_bullet, all_enemy, True, True):
-        kill_enemy_hero2 += 1
-    score_blit(kill_enemy_hero2 , 50 )
+        hero2.kill_score += 1
+    score_blit(f'score1 = {hero2.kill_score}' , 20 )
 
     screen.blit(hero1.image, hero1.rect)  # отрисовка кораблика
     screen.blit(hero2.image, hero2.rect)  # отрисовка кораблика
