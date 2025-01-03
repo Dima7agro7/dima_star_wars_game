@@ -90,3 +90,5 @@ while running:  # запуск игрового цикла
 
 pygame.quit()  # завершаем все зависимости pygame
 
+
+
